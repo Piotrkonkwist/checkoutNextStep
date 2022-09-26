@@ -12,7 +12,7 @@ define([
      */
     return Component.extend({
         defaults: {
-            template: '<Vendor>_<Module>/mystep'
+            template: 'monogo_module-new-step-checkout/mystep'
         },
 
         // add here your logic to display step,
@@ -64,6 +64,18 @@ define([
          */
         navigateToNextStep: function () {
             stepNavigator.next();
+        },
+
+        /**
+         *
+         * @returns {number}
+         */
+        getTimeTest: function () {
+            let t = new Date();
+            // return  t.toDateString();
+            return t.toLocaleDateString();
         }
+
+
     });
 });
