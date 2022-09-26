@@ -1,0 +1,25 @@
+<?php
+$product = $block->getTitle();
+$timestring = $product;
+?>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui\js\core\app": {
+                "components":{
+                    "timer-scope":{
+                        "component": "monogo_module-new-step-checkout\js\content",
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+<div data-bind="scope:monogo-component ">
+    <h2 data-bind="text:title" >hello</h2>
+</div>
+
+<div><?= $product?/></div>
+

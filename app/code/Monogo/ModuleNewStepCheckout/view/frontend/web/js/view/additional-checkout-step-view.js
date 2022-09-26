@@ -12,7 +12,7 @@ define([
      */
     return Component.extend({
         defaults: {
-            template: 'monogo_module-new-step-checkout/mystep'
+            template: 'Monogo_ModuleNewStepCheckout/mystep'
         },
 
         // add here your logic to display step,
