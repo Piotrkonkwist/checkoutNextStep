@@ -1,0 +1,14 @@
+<button class="result_json">Get JSON Result</button>
+<script type="text/javascript">
+    require(['jquery', 'jquery/ui'], function($){
+        $(document).on('click','.result_json',function (){
+            $.ajax({
+                context: '#ajaxresponse1',
+                url: '<?= $this->getBaseUrl();?>mycheckout/index/responsejson',
+                type: "GET",
+            }).done(function (response) {
+                alert(response.success);
+            });
+        });
+    });
+</script>
