@@ -2,9 +2,11 @@
 
 namespace Monogo\ModuleNewStepCheckout\Controller\Index;
 
+use Magento\Catalog\Model\CategoryFactory;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Controller\Result\JsonFactory;
 
 class Responsejson extends Action
 {
@@ -14,19 +16,34 @@ class Responsejson extends Action
      * @var jsonResultFactory
      */
     protected $jsonResultFactory;
+    private $categoryFactory;
+    protected $_productCollectionFactory;
 
     /**
-     * Set the Context and Result Page Factory from DI.
-     * @param Context     $context
-     * @param JsonResultFactory $jsonResultFactory
+     * @param Context $context
+     * @param CategoryFactory $categoryFactory
+     * @param JsonFactory $jsonResultFactory
+     * @param CollectionFactory $productCollectionFactory
+     * @param array $data
      */
     public function __construct(
         Context $context,
-        \Magento\Framework\Controller\Result\JsonFactory $jsonResultFactory,
+        CategoryFactory $categoryFactory,
+        JsonFactory $jsonResultFactory,
+        CollectionFactory $productCollectionFactory,
         array $data = []
     ) {
         $this->jsonResultFactory = $jsonResultFactory;
+        $this->categoryFactory = $categoryFactory;
+        $this->_productCollectionFactory = $productCollectionFactory;
         parent::__construct($context);
+    }
+
+    public function getProductCollectionByCategories($id)
+    {
+        $collection = $this->_productCollectionFactory->create();
+        $collection->addAttributeToSelect('*')->addCategoriesFilter(['in' => $id]);
+        return $collection;
     }
 
     /**
@@ -34,34 +51,22 @@ class Responsejson extends Action
      *
      * @return \Magento\Framework\Controller\Result\Json
      */
-
     public function execute()
     {
-
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $cart = $objectManager->get('\Magento\Checkout\Model\Cart');
-
-// get quote items collection
-        $itemsCollection = $cart->getQuote()->getItemsCollection();
-
-// get array of all items what can be display directly
-        $itemsVisible = $cart->getQuote()->getAllVisibleItems();
-
-// get quote items array
-        $items = $cart->getQuote()->getAllItems();
-
+        $productCollection = $this->getProductCollectionByCategories("41");
         $data = [];
-        foreach($items as $key => $item) {
-            $data[$key]['ID'] = $item->getProductId();
-            $data[$key]['Name'] = $item->getName();
-            $data[$key]['Sku'] = $item->getSku();
-            $data[$key]['Quantity'] = $item->getQty();
-            $data[$key]['Price'] = $item->getPrice();
-            }
+        foreach ($productCollection as $key => $product) {
+            $data[$key]['ID'] = $product->getId();
+            $data[$key]['Name'] = $product->getName();
+            $data[$key]['Sku'] = $product->getSku();
+            $data[$key]['Quantity'] = $product->getQty();
+            $data[$key]['Price'] = $product->getPrice();
+            $data[$key]['image_path'] = $product->getImage();
+        }
 
         $result = $this->jsonResultFactory->create();
+
         $result->setData($data);
         return $result;
     }
-
 }

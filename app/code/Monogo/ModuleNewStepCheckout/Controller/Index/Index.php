@@ -1,7 +1,7 @@
 <?php
 namespace Monogo\ModuleNewStepCheckout\Controller\Index;
 
-use Magento\Framework\App\Action
+use Magento\Framework\App\Action;
 
 class Index extends \Magento\Framework\App\Action\Action
 {
