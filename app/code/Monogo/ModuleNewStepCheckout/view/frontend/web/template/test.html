@@ -1,0 +1,25 @@
+<button data-bind=" click: getProduct">Get Next Product</button>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Product Name</th>
+        <th>Product Price</th>
+        <th>Preview</th>
+    </tr>
+    </thead>
+    <tbody data-bind="foreach: { data: listaproduktow, as: 'items'}">
+            <!-- ko foreach: { data: items, as: 'item' } -->
+        <tr class="totals sub">
+<!--            <th data-bind="text: item.id" class="mark" scope="row"></th>-->
+            <th data-bind="text: item.name" class="name" scope="row"></th>
+            <td class="amount">
+                <span class="price" data-bind="text: item.price"></span>
+            </td>
+            <td><img data-bind="attr: {src: item.imagepath}" width="120" height="150" alt="Product Image"></td>
+        </tr>
+            <!-- /ko -->
+    </tbody>
+</table>
+<div data-bind="afterRender: getProduct()"></div>

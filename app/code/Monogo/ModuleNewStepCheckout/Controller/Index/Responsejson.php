@@ -56,14 +56,12 @@ class Responsejson extends Action
         $productCollection = $this->getProductCollectionByCategories("41");
         $data = [];
         foreach ($productCollection as $key => $product) {
-            $data[$key]['ID'] = $product->getId();
-            $data[$key]['Name'] = $product->getName();
-            $data[$key]['Sku'] = $product->getSku();
-            $data[$key]['Quantity'] = $product->getQty();
-            $data[$key]['Price'] = $product->getPrice();
-            $data[$key]['image_path'] = $product->getImage();
+            $data[]  = ['id' => $product->getId(),
+                            'name' => $product->getName(),
+                            'sku' => $product->getSku(),
+                            'price' => $product->getPrice(),
+                            'imagepath' => $product->getImage()];
         }
-
         $result = $this->jsonResultFactory->create();
 
         $result->setData($data);

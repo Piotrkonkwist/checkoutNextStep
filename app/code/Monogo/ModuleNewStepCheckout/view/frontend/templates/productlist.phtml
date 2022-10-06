@@ -1,0 +1,16 @@
+<?php
+
+use Magento\Catalog\ViewModel\Product\Listing\PreparePostData;
+use Magento\Framework\App\ActionInterface;
+
+/**
+ * @var $block \Magento\Catalog\Block\Product\AbstractProduct
+ *
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ * @var \Monogo\ModuleNewStepCheckout\Block\Index $block
+ */
+
+echo $block->productList();
+$items = $block->productList();
+
+

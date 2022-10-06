@@ -4,5 +4,8 @@
         <route frontName="mycheckout" id="mycheckout">
             <module name="Monogo_ModuleNewStepCheckout"/>
         </route>
+        <route frontName="knockout" id="knockout">
+            <module name="Monogo_ModuleNewStepCheckout"/>
+        </route>
     </router>
 </config>

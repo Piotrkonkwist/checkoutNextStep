@@ -2,10 +2,13 @@ define([
     'ko',
     'uiComponent',
     'underscore',
+    'mage/url',
+    'mage/storage',
     'Magento_Checkout/js/model/step-navigator'
-], function (ko, Component, _, stepNavigator) {
+], function (ko, Component, _, urlBuilder, storage, stepNavigator) {
     'use strict';
 
+    var listaproduktow = [];
     /**
      * mystep - is the name of the component's .html template,
      * <Vendor>_<Module>  - is the name of your module directory.
@@ -14,7 +17,7 @@ define([
         defaults: {
             template: 'Monogo_ModuleNewStepCheckout/mystep'
         },
-
+        listaproduktow: ko.observableArray(),
         // add here your logic to display step,
         isVisible: ko.observable(true),
 
@@ -74,8 +77,28 @@ define([
             let t = new Date();
             // return  t.toDateString();
             return t.toLocaleDateString();
-        }
-
+        },
+        getProduct: function () {
+            var self = this;
+            // var serviceUrl = urlBuilder.build('knockout/test/product?id='+id);
+            // var productUrl = urlBuilder.build('mycheckout/index/responsejson);
+            var serviceUrl = 'http://magento.test/mycheckout/index/responsejson';
+            return storage.post(
+                serviceUrl,
+                ''
+            ).done(
+                function (response) {
+                    window.mojeresponse = response;
+                    _.map(response, function(num){
+                        self.listaproduktow.push(num);
+                    });
+                }
+            ).fail(
+                function (response) {
+                    alert(response);
+                }
+            );
+        },
 
     });
 });
