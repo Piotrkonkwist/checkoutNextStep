@@ -18,6 +18,7 @@ define([
             template: 'Monogo_ModuleNewStepCheckout/mystep'
         },
         listaproduktow: ko.observableArray(),
+        productUrlId: ko.observable("mycheckout/index/responsejson?id=13"), //only for test fixe id
         // add here your logic to display step,
         isVisible: ko.observable(true),
 
@@ -78,11 +79,12 @@ define([
             // return  t.toDateString();
             return t.toLocaleDateString();
         },
+        getMainUrl: function(){
+          return ['productUrlId', urlBuilder.build('mycheckout/index/responsejson/ ')];
+        },
         getProduct: function () {
             var self = this;
-            // var serviceUrl = urlBuilder.build('knockout/test/product?id='+id);
-            // var productUrl = urlBuilder.build('mycheckout/index/responsejson);
-            var serviceUrl = 'http://magento.test/mycheckout/index/responsejson';
+            var serviceUrl = urlBuilder.build('mycheckout/index/responsejson/ ');
             return storage.post(
                 serviceUrl,
                 ''
@@ -91,6 +93,7 @@ define([
                     window.mojeresponse = response;
                     _.map(response, function(num){
                         self.listaproduktow.push(num);
+                        console.log('productUrlId: ', serviceUrl);
                     });
                 }
             ).fail(

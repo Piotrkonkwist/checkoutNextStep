@@ -20,7 +20,16 @@
                 <span class="price" data-bind="text: item.price"></span>
             </td>
             <td><img data-bind="attr: {src: item.imagepath}" width="120" height="150" alt="Product Image"></td>
-
+            <td><a href="mycheckout/addProductToCart/product?id=" data-bind="text: item.id"></a> </td>
+            <td>
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <button data-role="opc-continue" type="submit" class="button action continue primary">
+                            <span><!-- ko i18n: 'add to cart'--><span></span><!-- /ko --></span>
+                        </button>
+                    </div>
+                </div>
+            </td>
         </tr>
         <!-- /ko -->
         </tbody>
