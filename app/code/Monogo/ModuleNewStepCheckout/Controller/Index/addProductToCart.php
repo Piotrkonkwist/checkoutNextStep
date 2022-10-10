@@ -24,18 +24,18 @@ class addProductToCart extends Action
     public function execute()
      {
         $params = $this->getRequest()->getParams();
-//        echo $params["id"];
-         $yourproductid = $params["id"];
-        $productId =$yourproductid; //yourproduct id like 2
-        $params = array(
-                    'form_key' => $this->formKey->getFormKey(),
-                    'product' => $productId,
-                    'qty'   =>1
-                );
-//        var_dump($params);
+        if (!empty($params['id'])) {
+            $yourproductid = $params["id"];
+            $productId =$yourproductid;
+            $params = array(
+                'form_key' => $this->formKey->getFormKey(),
+                'product' => $productId,
+                'qty'   =>1
+            );
 
-        $product = $this->product->load($productId);
-        $this->cart->addProduct($product, $params);
-        $this->cart->save();
+            $product = $this->product->load($productId);
+            $this->cart->addProduct($product, $params);
+            $this->cart->save();
+        }
      }
 }

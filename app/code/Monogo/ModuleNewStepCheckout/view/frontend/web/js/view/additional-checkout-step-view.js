@@ -9,6 +9,9 @@ define([
     'use strict';
 
     var listaproduktow = [];
+    var reqPath= 'mycheckout/index/responsejson/';
+    var addUrl = 'mycheckout/index/addProductToCart?id=';
+
     /**
      * mystep - is the name of the component's .html template,
      * <Vendor>_<Module>  - is the name of your module directory.
@@ -18,10 +21,8 @@ define([
             template: 'Monogo_ModuleNewStepCheckout/mystep'
         },
         listaproduktow: ko.observableArray(),
-        productUrlId: ko.observable("mycheckout/index/responsejson?id=13"), //only for test fixe id
         // add here your logic to display step,
         isVisible: ko.observable(true),
-
         /**
          * @returns {*}
          */
@@ -79,21 +80,38 @@ define([
             // return  t.toDateString();
             return t.toLocaleDateString();
         },
-        getMainUrl: function(){
-          return ['productUrlId', urlBuilder.build('mycheckout/index/responsejson/ ')];
+
+        addProduct: function(data){
+            var urlAdd = urlBuilder.build(addUrl + data.id);
+            urlAdd + data.id;
+            return storage.post(
+                    urlAdd,
+                    ''
+                ).done(
+                    function (response) {
+                        console.log('succesfully added to cart');
+                        window.location.reload();
+                    }
+                    // }
+                ).fail(
+                    function (response) {
+                        alert(response);
+                    }
+                );
         },
+
         getProduct: function () {
             var self = this;
-            var serviceUrl = urlBuilder.build('mycheckout/index/responsejson/ ');
+            var serviceUrl = urlBuilder.build(reqPath);
+
             return storage.post(
                 serviceUrl,
                 ''
             ).done(
                 function (response) {
-                    window.mojeresponse = response;
                     _.map(response, function(num){
+                        _.extend(num, {link: addUrl + '?id=' + num.id });
                         self.listaproduktow.push(num);
-                        console.log('productUrlId: ', serviceUrl);
                     });
                 }
             ).fail(
