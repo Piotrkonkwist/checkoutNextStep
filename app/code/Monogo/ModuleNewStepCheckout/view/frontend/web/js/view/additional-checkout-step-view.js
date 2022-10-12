@@ -4,13 +4,15 @@ define([
     'underscore',
     'mage/url',
     'mage/storage',
-    'Magento_Checkout/js/model/step-navigator'
-], function (ko, Component, _, urlBuilder, storage, stepNavigator) {
+    'Magento_Checkout/js/model/step-navigator',
+    'Magento_Checkout/js/view/summary/abstract-total',
+    'Magento_Checkout/js/model/quote'
+], function (ko, Component, _, urlBuilder, storage, stepNavigator, quote) {
     'use strict';
 
-    var listaproduktow = [];
-    var reqPath= 'mycheckout/index/responsejson/';
-    var addUrl = 'mycheckout/index/addProductToCart?id=';
+    var listaproduktow = [],
+        reqPath = 'mycheckout/index/responsejson/',
+        addUrl = 'mycheckout/index/addProductToCart?id=';
 
     /**
      * mystep - is the name of the component's .html template,
@@ -23,6 +25,7 @@ define([
         listaproduktow: ko.observableArray(),
         // add here your logic to display step,
         isVisible: ko.observable(true),
+
         /**
          * @returns {*}
          */
@@ -78,7 +81,7 @@ define([
         getTimeTest: function () {
             let t = new Date();
             // return  t.toDateString();
-            return t.toLocaleDateString();
+            return  toLocaleDateString();
         },
 
         addProduct: function(data){
@@ -92,7 +95,6 @@ define([
                         console.log('succesfully added to cart');
                         window.location.reload();
                     }
-                    // }
                 ).fail(
                     function (response) {
                         alert(response);
@@ -101,16 +103,16 @@ define([
         },
 
         getProduct: function () {
-            var self = this;
-            var serviceUrl = urlBuilder.build(reqPath);
+            var self = this,
+                serviceUrl = urlBuilder.build(reqPath);
 
             return storage.post(
                 serviceUrl,
                 ''
             ).done(
                 function (response) {
-                    _.map(response, function(num){
-                        _.extend(num, {link: addUrl + '?id=' + num.id });
+                    _.map(response, function (num) {
+                        _.extend( num, { link: addUrl + '?id=' + num.id });
                         self.listaproduktow.push(num);
                     });
                 }
@@ -120,6 +122,12 @@ define([
                 }
             );
         },
-
+        /**
+         * @return {*|String}
+         */
+        getValue: function () {
+            return 'greenes';
+            // return this.getFormattedPrice('13,00000');
+        }
     });
 });

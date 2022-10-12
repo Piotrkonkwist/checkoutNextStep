@@ -7,21 +7,18 @@
         <tr>
             <th>Product Name</th>
             <th>Product Price</th>
-<!--            <th>Preview</th>-->
+            <th>Preview</th>
             <th>Add to cart</th>
         </tr>
         </thead>
         <tbody data-bind="foreach: { data: listaproduktow, as: 'items'}">
         <!-- ko foreach: { data: items, as: 'item' } -->
         <tr class="totals sub">
-            <!--            <th data-bind="text: item.id" class="mark" scope="row"></th>-->
-            <td data-bind="text: item.name" class="name" scope="row"></td>
+            <td><a data-bind="attr: { href: item.productUrl }"><span data-bind="text: item.name"></span></a></td>
             <td class="amount">
-                <span class="price" data-bind="text: item.price"></span>
+                <span class="price" data-bind="text: $parents[1].getValue()"></span>
             </td>
-<!--            <td><img data-bind="attr: {src: item.imagepath}" width="120" height="150" alt="Product Image"></td>-->
-<!--            <td><a href="mycheckout/addProductToCart/product?id=" data-bind="text: item.link"></a> </td>-->
-<!--            <td data-bind="text: $parents[1].addProduct(1)"></td>-->
+            <td><img data-bind="attr: {src: item.imgUrl}" width="120" height="150" alt="Product Image"></td>
             <td>
                 <div class="actions-toolbar">
                     <div class="primary">
