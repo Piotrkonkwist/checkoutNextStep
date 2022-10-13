@@ -4,11 +4,16 @@ define([
     'underscore',
     'mage/url',
     'mage/storage',
-    'Magento_Checkout/js/model/step-navigator'
-], function (ko, Component, _, urlBuilder, storage, stepNavigator) {
+    'Magento_Checkout/js/model/step-navigator',
+    'Magento_Checkout/js/view/summary/abstract-total',
+    'Magento_Checkout/js/model/quote'
+], function (ko, Component, _, urlBuilder, storage, stepNavigator, quote) {
     'use strict';
 
-    var listaproduktow = [];
+    var listaproduktow = [],
+        reqPath = 'mycheckout/index/responsejson/',
+        addUrl = 'mycheckout/index/addProductToCart?id=';
+
     /**
      * mystep - is the name of the component's .html template,
      * <Vendor>_<Module>  - is the name of your module directory.
@@ -76,20 +81,38 @@ define([
         getTimeTest: function () {
             let t = new Date();
             // return  t.toDateString();
-            return t.toLocaleDateString();
+            return  toLocaleDateString();
         },
+
+        addProduct: function(data){
+            var urlAdd = urlBuilder.build(addUrl + data.id);
+            urlAdd + data.id;
+            return storage.post(
+                    urlAdd,
+                    ''
+                ).done(
+                    function (response) {
+                        console.log('succesfully added to cart');
+                        window.location.reload();
+                    }
+                ).fail(
+                    function (response) {
+                        alert(response);
+                    }
+                );
+        },
+
         getProduct: function () {
-            var self = this;
-            // var serviceUrl = urlBuilder.build('knockout/test/product?id='+id);
-            // var productUrl = urlBuilder.build('mycheckout/index/responsejson);
-            var serviceUrl = 'http://magento.test/mycheckout/index/responsejson';
+            var self = this,
+                serviceUrl = urlBuilder.build(reqPath);
+
             return storage.post(
                 serviceUrl,
                 ''
             ).done(
                 function (response) {
-                    window.mojeresponse = response;
-                    _.map(response, function(num){
+                    _.map(response, function (num) {
+                        _.extend( num, { link: addUrl + '?id=' + num.id });
                         self.listaproduktow.push(num);
                     });
                 }
@@ -99,6 +122,12 @@ define([
                 }
             );
         },
-
+        /**
+         * @return {*|String}
+         */
+        getValue: function () {
+            return 'greenes';
+            // return this.getFormattedPrice('13,00000');
+        }
     });
 });
